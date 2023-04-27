@@ -1,20 +1,36 @@
-import { Button, Card, CardActions, CardContent, Typography } from "@material-ui/core";
+import { Button, Card, CardActions, CardContent, Typography } from "@mui/material";
 import { Box } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useLocalStorage from "react-use-localstorage";
 import Tema from "../../../models/Tema";
-import { deleteId } from "../../../services/Service";
+import { buscaId, deleteId } from "../../../services/Service";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { TokenState } from "../../../store/tokens/TokensReducer";
 
 
 function DeletarTema() {
     let history = useNavigate();
     const { id } = useParams<{ id: string }>();
-    const [token, setToken] = useLocalStorage<Tema>()
+    const token = useSelector<TokenState, TokenState["tokens"]>(
+        (state) => state.tokens
+    );
+    const [tema, setTema] = useState<Tema>()
 
     useEffect(() => {
         if (token == "") {
-            alert('Você precisa estar logado!')
+            toast.error('Você precisa estar logado', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: false,
+                progress: undefined,
+                theme: "colored",
+
+            });
             history('/login')
         }
     }, [token])
@@ -42,7 +58,17 @@ function DeletarTema() {
                 'Authorization': token
             }
         });
-        alert('Tema deletado com sucesso!')
+        toast.success('Tema deletado com sucesso', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+            theme: "colored",
+
+        });
     }
 
     function nao() {
@@ -66,20 +92,13 @@ function DeletarTema() {
                     </CardContent>
                     <CardActions>
                         <Box display="flex" justifyContent="start" ml={1.0} mb={2} >
-                            <Box mx={2}>
-                                <Button onClick={sim} variant="contained" className="marginLeft" size='large' color="primary">
-                                    Sim
-                                </Button>
-                            </Box>
-                            <Box mx={2}>
-                                <Button onCLick={nao} variant="contained" size='large' color="secondary">
-                                    Não
-                                </Button>
-                            </Box>
+
+                            <Button variant="contained" className="marginLeft" size='large' color="primary" onClick={sim} >Sim</Button>
+                            <Button variant="contained" size='large' color="secondary" onCLick={nao}>Não</Button>
                         </Box>
                     </CardActions>
                 </Card>
-            </Box>
+            </Box >
         </>
     );
 }

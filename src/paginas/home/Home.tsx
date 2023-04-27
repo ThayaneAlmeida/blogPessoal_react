@@ -8,6 +8,7 @@ import useLocalStorage from 'react-use-localstorage';
 import ModalPostagem from '../../components/postagens/modalPostagem/ModalPostagem';
 import { useSelector } from 'react-redux';
 import { TokenState } from '../../store/tokens/TokensReducer';
+import { toast } from 'react-toastify';
 
 function Home() {
     let history = useNavigate();
@@ -17,7 +18,17 @@ function Home() {
 
     useEffect(() => {
         if (token == '') {
-            alert('Você precisa estar logado!')
+            toast.error('Você precisa estar logado', {
+                position:"top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: false,
+                progress: undefined,
+                theme:"colored",
+        
+                });
             history('/login')
         }
 
