@@ -38,12 +38,11 @@ function DeletarTema() {
     useEffect(() => {
         if (id !== undefined) {
             findById(id)
-            history('/login')
         }
     }, [id])
 
     async function findById(id: string) {
-        buscaId('/tema/${id}', setTema, {
+        buscaId(`/tema/${id}`, setTema, {
             headers: {
                 'Authorization': token
             }
@@ -94,7 +93,7 @@ function DeletarTema() {
                         <Box display="flex" justifyContent="start" ml={1.0} mb={2} >
 
                             <Button variant="contained" className="marginLeft" size='large' color="primary" onClick={sim} >Sim</Button>
-                            <Button variant="contained" size='large' color="secondary" onCLick={nao}>Não</Button>
+                            <Button variant="contained" size='large' color="secondary" onClick={nao}>Não</Button>
                         </Box>
                     </CardActions>
                 </Card>
